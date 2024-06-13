@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product List</title>
+</head>
+<body>
+    <h1>Products</h1>
+    <h2>Coffee</h2>
+    <ul>
+        {% for product in coffee %}
+        <li>
+            {{ product.name }} - ${{ product.price }}
+            <a href="{% url 'add_to_cart' product.id %}">Add to cart</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <h2>Pastry</h2>
+    <ul>
+        {% for product in pastry %}
+        <li>
+            {{ product.name }} - ${{ product.price }}
+            <a href="{% url 'add_to_cart' product.id %}">Add to cart</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'view_cart' %}">View Cart</a>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
