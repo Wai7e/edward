@@ -39,8 +39,12 @@ def register(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
-            login(request, user)
-            return redirect('product_list')
+            if user is not None:
+                login(request, user)
+                return redirect('product_list')
+        else:
+            for field in form.errors:
+                form[field].field.widget.attrs['class'] = 'error'
     else:
         form = UserRegistrationForm()
     return render(request, 'shop/register.html', {'form': form})
