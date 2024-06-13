@@ -263,18 +263,31 @@ footer {
 }
 
 /* Стили для формы оплаты */
-.payment-form {
+.payment-modal, .success-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.payment-form, .success-message {
+    position: relative;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
-    text-align: left;
     max-width: 400px;
-    margin: 20px auto;
+    width: 100%;
+    text-align: left;
 }
 
-.payment-form h3 {
+.payment-form h3, .success-message h3 {
     margin-bottom: 20px;
 }
 
@@ -310,13 +323,55 @@ footer {
     background-color: #e67600;
 }
 
+/* Стили для кнопки закрытия */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
 /* Стили для сообщения об успешной оплате */
 .success-message {
-    background-color: #dff0d8;
-    color: #3c763d;
+    text-align: center;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для переключателя способа оплаты */
+.payment-method {
     margin: 20px 0;
     text-align: center;
 }
+
+.payment-options {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.payment-option {
+    flex: 1;
+    padding: 10px;
+    margin: 5px;
+    background-color: #ccc;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.payment-option.active {
+    background-color: #ff8c00;
+}
+

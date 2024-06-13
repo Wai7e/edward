@@ -41,6 +41,7 @@ def register(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                Cart.objects.create(user=user)
                 return redirect('product_list')
         else:
             for field in form.errors:

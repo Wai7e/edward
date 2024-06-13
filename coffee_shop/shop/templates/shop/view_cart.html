@@ -5,60 +5,98 @@
 {% block content %}
 <h1 class="top-block">Ваша Корзина</h1>
 <div class="cart-container">
-    {% for item in cart.cartitem_set.all %}
-    <div class="cart-item">
-        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
-        <div class="item-info">
-            <h3>{{ item.product.name }}</h3>
-            <p>₽{{ item.product.price }}</p>
+        {% for item in cart.cartitem_set.all %}
+        <div class="cart-item">
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            <div class="item-info">
+                <h3>{{ item.product.name }}</h3>
+                <p>₽{{ item.product.price }}</p>
+            </div>
+            <div class="item-quantity">
+                <button class="btn-decrease">-</button>
+                <span>{{ item.quantity }}</span>
+                <button class="btn-increase">+</button>
+            </div>
         </div>
-        <div class="item-quantity">
-            <button class="btn-decrease">-</button>
-            <span>{{ item.quantity }}</span>
-            <button class="btn-increase">+</button>
-        </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
 </div>
 <div class="cart-summary">
     Итого: ₽{{ cart_total }}
 </div>
-<a href="{% url 'product_list' %}">Меню</a>
+{#<a href="{% url 'product_list' %}">Меню</a>#}
+
+<!-- Выбор способа оплаты -->
+<div class="payment-method">
+    <h3>Выберите способ оплаты:</h3>
+    <div class="payment-options">
+        <div id="cash-option" class="payment-option active">На кассе</div>
+        <div id="card-option" class="payment-option">Картой онлайн</div>
+    </div>
+</div>
 
 <!-- Кнопка оплатить -->
 <button id="pay-button" class="btn-pay">Оплатить</button>
 
 <!-- Форма для ввода данных карты (изначально скрыта) -->
-<div id="payment-form" class="payment-form" style="display: none;">
-    <h3>Введите данные карты</h3>
-    <form id="card-form">
-        <label for="card-number">Номер карты</label>
-        <input type="text" id="card-number" name="card-number" required>
+<div id="payment-modal" class="payment-modal" style="display: none;">
+    <div id="payment-form" class="payment-form">
+        <span class="close-button" id="close-payment-modal">&times;</span>
+        <h3>Введите данные карты</h3>
+        <form id="card-form">
+            <label for="card-number">Номер карты</label>
+            <input type="text" id="card-number" name="card-number" required>
 
-        <label for="expiry-date">Срок действия</label>
-        <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
+            <label for="expiry-date">Срок действия</label>
+            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY" required>
 
-        <label for="cvv">CVV</label>
-        <input type="text" id="cvv" name="cvv" required>
+            <label for="cvv">CVV</label>
+            <input type="text" id="cvv" name="cvv" required>
 
-        <button type="submit" class="btn-submit">Оплатить</button>
-    </form>
+            <button type="submit" class="btn-submit">Оплатить</button>
+        </form>
+    </div>
 </div>
 
-<!-- Сообщение об успешной оплате -->
-<div id="success-message" class="success-message" style="display: none;">
-    Успешно, можете забрать ваш заказ здесь: <strong>адрес</strong>
+<!-- Сообщение об успешной оплате (изначально скрыто) -->
+<div id="success-modal" class="success-modal" style="display: none;">
+    <div id="success-message" class="success-message">
+        <span class="close-button" id="close-success-modal">&times;</span>
+        Успешно, можете забрать ваш заказ здесь:<br> <strong>адрес</strong>
+    </div>
 </div>
 
 <script>
 document.getElementById('pay-button').addEventListener('click', function() {
-    document.getElementById('payment-form').style.display = 'block';
+    const selectedPaymentMethod = document.querySelector('.payment-option.active').id;
+    if (selectedPaymentMethod === 'card-option') {
+        document.getElementById('payment-modal').style.display = 'flex';
+    } else {
+        document.getElementById('success-modal').style.display = 'flex';
+    }
 });
 
 document.getElementById('card-form').addEventListener('submit', function(event) {
     event.preventDefault();
-    document.getElementById('payment-form').style.display = 'none';
-    document.getElementById('success-message').style.display = 'block';
+    document.getElementById('payment-modal').style.display = 'none';
+    document.getElementById('success-modal').style.display = 'flex';
+});
+
+document.getElementById('cash-option').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('card-option').classList.remove('active');
+});
+
+document.getElementById('card-option').addEventListener('click', function() {
+    this.classList.add('active');
+    document.getElementById('cash-option').classList.remove('active');
+});
+
+document.getElementById('close-payment-modal').addEventListener('click', function() {
+    document.getElementById('payment-modal').style.display = 'none';
+});
+
+document.getElementById('close-success-modal').addEventListener('click', function() {
+    document.getElementById('success-modal').style.display = 'none';
 });
 </script>
 {% endblock %}
