@@ -3,8 +3,8 @@
 {% block title %}Product List{% endblock %}
 
 {% block content %}
-<h1>Our Products</h1>
-<h2>Coffee</h2>
+<h1 class="top-block">Меню</h1>
+<h2>Кофейные напитки</h2>
 <div class="card-container">
     {% for product in coffee %}
     <div class="card">
@@ -12,13 +12,16 @@
         <div class="card-content">
             <h2>{{ product.name }}</h2>
             <p>{{ product.description }}</p>
-            <p class="price">${{ product.price }}</p>
-            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart">Add to cart</a>
+            <p class="price">₽{{ product.price }}</p>
+            {% if user.is_anonymous %}
+            {% else %}
+            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart">В корзину</a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}
 </div>
-<h2>Pastry</h2>
+<h2>Выпечка</h2>
 <div class="card-container">
     {% for product in pastry %}
     <div class="card">
@@ -26,8 +29,11 @@
         <div class="card-content">
             <h2>{{ product.name }}</h2>
             <p>{{ product.description }}</p>
-            <p class="price">${{ product.price }}</p>
-            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart">Add to cart</a>
+            <p class="price">₽{{ product.price }}</p>
+            {% if user.is_anonymous %}
+            {% else %}
+            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart">В корзину</a>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

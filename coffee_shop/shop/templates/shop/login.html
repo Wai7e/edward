@@ -3,7 +3,7 @@
 {% block title %}Вход{% endblock %}
 
 {% block content %}
-<h1>Войти</h1>
+<h1 class="top-block">Войти</h1>
 <form method="post" class="login-form">
     {% csrf_token %}
     {{ form.non_field_errors }}
