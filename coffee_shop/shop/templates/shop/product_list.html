@@ -1,30 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Product List</title>
-</head>
-<body>
-    <h1>Products</h1>
-    <h2>Coffee</h2>
-    <ul>
-        {% for product in coffee %}
-        <li>
-            {{ product.name }} - ${{ product.price }}
-            <a href="{% url 'add_to_cart' product.id %}">Add to cart</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <h2>Pastry</h2>
-    <ul>
-        {% for product in pastry %}
-        <li>
-            {{ product.name }} - ${{ product.price }}
-            <a href="{% url 'add_to_cart' product.id %}">Add to cart</a>
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'view_cart' %}">View Cart</a>
-    <a href="{% url 'logout' %}">Logout</a>
-</body>
-</html>
+{% extends 'shop/base.html' %}
+
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+<h1>Our Products</h1>
+<h2>Coffee</h2>
+<div class="card-container">
+    {% for product in coffee %}
+    <div class="card">
+        <img src="{% static 'shop/images/coffee.jpg' %}" alt="Coffee Image">
+        <div class="card-content">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p class="price">${{ product.price }}</p>
+            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart">Add to cart</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<h2>Pastry</h2>
+<div class="card-container">
+    {% for product in pastry %}
+    <div class="card">
+        <img src="{% static 'shop/images/coffe_1.jpg' %}" alt="Pastry Image">
+        <div class="card-content">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p class="price">${{ product.price }}</p>
+            <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart">Add to cart</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
