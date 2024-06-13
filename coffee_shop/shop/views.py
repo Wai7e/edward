@@ -1,5 +1,6 @@
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .models import Product, Cart, CartItem
 from .forms import UserRegistrationForm
@@ -25,7 +26,9 @@ def add_to_cart(request, product_id):
 @login_required
 def view_cart(request):
     cart = get_object_or_404(Cart, user=request.user)
-    return render(request, 'shop/view_cart.html', {'cart': cart})
+    cart_items = cart.cartitem_set.all()
+    cart_total = sum(item.product.price * item.quantity for item in cart_items)
+    return render(request, 'shop/view_cart.html', {'cart': cart, 'cart_total': cart_total})
 
 
 def register(request):
@@ -41,3 +44,23 @@ def register(request):
     else:
         form = UserRegistrationForm()
     return render(request, 'shop/register.html', {'form': form})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('product_list')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'shop/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('product_list')

@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Coffee Shop{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
 </head>
 <body>
     <header>
@@ -11,11 +12,11 @@
         <nav>
             {% if user.is_authenticated %}
                 <span>{{ user.username }}</span>
-                <a href="{% url 'view_cart' %}">Cart</a>
-                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'view_cart' %}">Корзина</a>
+                <a href="{% url 'logout' %}">Выйти</a>
             {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Зарегестрироваться</a>
             {% endif %}
         </nav>
     </header>

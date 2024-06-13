@@ -90,3 +90,115 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.cart-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.cart-item .item-info {
+    flex-grow: 1;
+}
+
+.cart-item .item-info h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.cart-item .item-info p {
+    margin: 5px 0;
+    color: #777;
+}
+
+.cart-item .item-quantity {
+    display: flex;
+    align-items: center;
+}
+
+.cart-item .item-quantity button {
+    background-color: #ff8c00;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 0 5px;
+}
+
+.cart-item .item-quantity button:hover {
+    background-color: #e67600;
+}
+
+.cart-item .item-quantity span {
+    margin: 0 10px;
+}
+
+.cart-summary {
+    margin-top: 20px;
+    text-align: right;
+    font-size: 1.2em;
+}
+
+/* Стили для форм логина и регистрации */
+
+.login-form, .register-form {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h1, .register-form h1 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: calc(100% - 22px);
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #e67600;
+}

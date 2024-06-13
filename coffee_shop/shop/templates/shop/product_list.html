@@ -1,5 +1,5 @@
 {% extends 'shop/base.html' %}
-
+{% load static %}
 {% block title %}Product List{% endblock %}
 
 {% block content %}
@@ -8,7 +8,7 @@
 <div class="card-container">
     {% for product in coffee %}
     <div class="card">
-        <img src="{% static 'shop/images/coffee.jpg' %}" alt="Coffee Image">
+        <img src="{{ product.image.url }}" alt="Coffee Image">
         <div class="card-content">
             <h2>{{ product.name }}</h2>
             <p>{{ product.description }}</p>
@@ -22,7 +22,7 @@
 <div class="card-container">
     {% for product in pastry %}
     <div class="card">
-        <img src="{% static 'shop/images/coffe_1.jpg' %}" alt="Pastry Image">
+        <img src="{{ product.image.url }}" alt="Pastry Image">
         <div class="card-content">
             <h2>{{ product.name }}</h2>
             <p>{{ product.description }}</p>
