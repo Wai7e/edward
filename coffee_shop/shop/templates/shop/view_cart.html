@@ -6,7 +6,7 @@
 <h1 class="top-block">Ваша Корзина</h1>
 <div class="cart-container">
         {% for item in cart.cartitem_set.all %}
-        <div class="cart-item">
+        <div class="cart-item" data-item-id="{{ item.id }}">
             <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
             <div class="item-info">
                 <h3>{{ item.product.name }}</h3>
@@ -14,14 +14,14 @@
             </div>
             <div class="item-quantity">
                 <button class="btn-decrease">-</button>
-                <span>{{ item.quantity }}</span>
+                <span class="quantity">{{ item.quantity }}</span>
                 <button class="btn-increase">+</button>
             </div>
         </div>
         {% endfor %}
 </div>
 <div class="cart-summary">
-    Итого: ₽{{ cart_total }}
+    Итого: ₽<span id="cart-total">{{ cart_total }}</span>
 </div>
 
 <!-- Выбор способа оплаты -->
@@ -35,7 +35,6 @@
 
 <!-- Кнопка оплатить -->
 <button id="pay-button" class="btn-pay">Оплатить</button>
-
 
 <!-- Форма для ввода данных карты (изначально скрыта) -->
 <div id="payment-modal" class="payment-modal" style="display: none;">
@@ -99,5 +98,77 @@ document.getElementById('close-payment-modal').addEventListener('click', functio
 document.getElementById('close-success-modal').addEventListener('click', function() {
     document.getElementById('success-modal').style.display = 'none';
 });
+
+// Handling quantity changes
+document.querySelectorAll('.btn-decrease').forEach(button => {
+    button.addEventListener('click', function() {
+        const cartItem = this.closest('.cart-item');
+        const quantityElement = cartItem.querySelector('.quantity');
+        let quantity = parseInt(quantityElement.textContent);
+        if (quantity > 1) {
+            quantity--;
+            updateCartItem(cartItem.dataset.itemId, quantity);
+            quantityElement.textContent = quantity;
+        } else {
+            deleteCartItem(cartItem.dataset.itemId);
+            cartItem.remove();
+        }
+        updateCartTotal();
+    });
+});
+
+document.querySelectorAll('.btn-increase').forEach(button => {
+    button.addEventListener('click', function() {
+        const cartItem = this.closest('.cart-item');
+        const quantityElement = cartItem.querySelector('.quantity');
+        let quantity = parseInt(quantityElement.textContent);
+        quantity++;
+        updateCartItem(cartItem.dataset.itemId, quantity);
+        quantityElement.textContent = quantity;
+        updateCartTotal();
+    });
+});
+
+function updateCartItem(itemId, quantity) {
+    fetch(`/cart/update_item/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ quantity: quantity })
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+    }).catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+}
+
+function deleteCartItem(itemId) {
+    fetch(`/cart/delete_item/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+    }).catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+}
+
+function updateCartTotal() {
+    fetch('/cart/total/')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('cart-total').textContent = data.total;
+        })
+        .catch(error => console.error('Error:', error));
+}
 </script>
 {% endblock %}

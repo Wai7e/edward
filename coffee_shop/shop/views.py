@@ -1,7 +1,12 @@
+import json
+
 from django.contrib.auth.forms import AuthenticationForm
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+
 from .models import Product, Cart, CartItem
 from .forms import UserRegistrationForm
 
@@ -69,3 +74,27 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('product_list')
+
+
+def update_cart_item(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id)
+    data = json.loads(request.body)
+    quantity = data.get('quantity')
+    if quantity and quantity > 0:
+        cart_item.quantity = quantity
+        cart_item.save()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid quantity'}, status=400)
+
+
+@require_POST
+def delete_cart_item(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id)
+    cart_item.delete()
+    return JsonResponse({'status': 'success'})
+
+
+def cart_total(request):
+    cart = get_object_or_404(Cart, user=request.user)
+    total = sum(item.product.price * item.quantity for item in cart.cartitem_set.all())
+    return JsonResponse({'total': total})
