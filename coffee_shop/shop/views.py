@@ -1,4 +1,5 @@
 import json
+import random
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
@@ -33,7 +34,8 @@ def view_cart(request):
     cart = get_object_or_404(Cart, user=request.user)
     cart_items = cart.cartitem_set.all()
     cart_total = sum(item.product.price * item.quantity for item in cart_items)
-    return render(request, 'shop/view_cart.html', {'cart': cart, 'cart_total': cart_total})
+    order_num = random.randint(1000, 9999)
+    return render(request, 'shop/view_cart.html', {'cart': cart, 'cart_total': cart_total, 'order_num': order_num})
 
 
 def register(request):

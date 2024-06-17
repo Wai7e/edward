@@ -36,6 +36,8 @@
 <!-- Кнопка оплатить -->
 <button id="pay-button" class="btn-pay">Оплатить</button>
 
+
+
 <!-- Форма для ввода данных карты (изначально скрыта) -->
 <div id="payment-modal" class="payment-modal" style="display: none;">
     <div id="payment-form" class="payment-form">
@@ -60,7 +62,9 @@
 <div id="success-modal" class="success-modal" style="display: none;">
     <div id="success-message" class="success-message">
         <span class="close-button" id="close-success-modal">&times;</span>
-        Успешно, можете забрать ваш заказ здесь:<br> <strong>адрес</strong><br>
+        <h2>Номер заказа:</h2>
+        <h3>#{{ order_num }}</h3>
+        Можете забрать ваш заказ здесь:<br> <strong>Карла-Маркса, 124</strong><br>
         <a href="{% url 'product_list' %}">Меню</a>
     </div>
 </div>
